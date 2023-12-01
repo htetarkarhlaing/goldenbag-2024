@@ -1,12 +1,13 @@
 {
-  "name": "next-app-template",
-  "version": "0.0.1",
+  "name": "Goldenbag-2024",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "@nextui-org/button": "2.0.26",
@@ -38,5 +39,14 @@
     "tailwind-variants": "^0.1.18",
     "tailwindcss": "3.3.5",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^15.1.0",
+    "prettier": "^3.1.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --config ./.prettierrc.js --write"],
+    "**/*.{css,scss,md,html,json}": ["prettier --config ./.prettierrc.js --write"]
   }
 }
