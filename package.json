@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "husky install"
+    "check-types": "tsc --pretty --noEmit",
+    "check-format": "prettier --check .",
+    "format": "prettier --write .",
+    "test-all": "npm run check-format && npm run lint && npm run check-types && npm run build",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@nextui-org/button": "2.0.26",
