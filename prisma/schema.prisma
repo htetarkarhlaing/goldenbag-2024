@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String  @id @default(uuid()) @map("_id")
+  name        String
+  email       String
+  phone       String
+  password    String
+  userId      String  @unique
+  createdById String?
+  CreatedBy   User?   @relation("createdUser", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Role        Role    @default(ADMIN)
+
+  status       Status         @default(ACTIVE)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  User         User[]         @relation("createdUser")
+  Voucher      Voucher[]
+  SupplyRecord SupplyRecord[]
+}
+
+model Voucher {
+  id          String   @id @default(uuid()) @map("_id")
+  date        DateTime @default(now())
+  voucherId   String   @unique
+  customerId  String
+  Customer    Customer @relation(fields: [customerId], references: [id])
+  truckId     String
+  Truck       Truck    @relation(fields: [truckId], references: [id])
+  createdById String?
+  CreatedBy   User?    @relation(fields: [createdById], references: [id])
+
+  status        Status          @default(ACTIVE)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  VoucherDetail VoucherDetail[]
+}
+
+model VoucherDetail {
+  id             String  @id @default(uuid()) @map("_id")
+  voucherId      String
+  Voucher        Voucher @relation(fields: [voucherId], references: [id])
+  particular     String?
+  particularNote String?
+  ply            String?
+  size           String?
+  unitPrice      Float   @default(0.0)
+  qty            Int     @default(0)
+  amount         Float   @default(0.0)
+  note           String
+
+  status    Status   @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Customer {
+  id   String @id @default(uuid()) @map("_id")
+  name String
+
+  status    Status    @default(ACTIVE)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Voucher   Voucher[]
+}
+
+model Truck {
+  id   String @id @default(uuid()) @map("_id")
+  name String
+
+  status    Status    @default(ACTIVE)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Voucher   Voucher[]
+}
+
+// ----- Paper and supplier
+model PaperType {
+  id   String @id @default(uuid()) @map("_id")
+  name String
+
+  status       Status         @default(ACTIVE)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  SupplyRecord SupplyRecord[]
+}
+
+model Supplier {
+  id   String @id @default(uuid()) @map("_id")
+  name String
+
+  status       Status         @default(ACTIVE)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  SupplyRecord SupplyRecord[]
+}
+
+model SupplyRecord {
+  id          String    @id @default(uuid()) @map("_id")
+  supplierId  String
+  Supplier    Supplier  @relation(fields: [supplierId], references: [id])
+  paperTypeId String
+  PaperType   PaperType @relation(fields: [paperTypeId], references: [id])
+  invoice     String?
+  weight      String?
+  unitPrice   Float     @default(0.0)
+  amount      Float     @default(0.0)
+  note        String?
+  date        DateTime  @default(now())
+  createdById String?
+  CreatedBy   User?     @relation(fields: [createdById], references: [id])
+
+  status    Status   @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+enum Status {
+  ACTIVE
+  DELETED
+}

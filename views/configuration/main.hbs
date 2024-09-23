@@ -1,0 +1,91 @@
+<html class='bg-gray-950'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Configuration</title>
+    <link href='../css/tailwind.css' rel='stylesheet' />
+  </head>
+  <body>
+    <div class='h-screen w-screen bg-gray-950 flex items-center justify-center'>
+      <div>
+        <h1 class='text-3xl text-gray-300 text-center mb-4'>The API
+          documentation for Main Panel</h1>
+        <div class='flex items-center justify-center space-x-4'>
+          <div
+            class='w-[600px] h-[400px] rounded-md bg-green-400/30 border-2 border-dashed border-green-400 relative overflow-hidden'
+          >
+            <img
+              src='/img/swagger.png'
+              class='w-[90%] h-auto absolute top-[50%] right-[50%] translate-x-[50%] -translate-y-[50%]'
+            />
+            <div
+              class='w-full h-full absolute top-0 left-0 z-10 backdrop-blur-md px-10'
+            >
+              <h3
+                class='text-center text-3xl font-bold text-gray-50 py-4'
+              >Restful APIs</h3>
+
+              <p class='text-gray-100'>
+                The RESTful APIs in Main Panel server are meticulously
+                documented to ensure ease of use and integration. Swagger
+                documentation is available, providing a comprehensive and
+                interactive overview of all API endpoints.
+              </p>
+              <p class='text-gray-100 mt-2'>Additionally,
+                <span class='font-bold text-red-500'>JSON and YAML</span>
+                files are provided at their respective URLs, offering flexible
+                and accessible options for developers to understand and
+                implement the APIs in their projects.
+              </p>
+              <ul class="mt-4">
+                <li class='text-gray-900 underline font-bold font-mono'>
+                  <a href='/docs'>Swagger API</a>
+                </li>
+                <li class='text-gray-900 underline font-bold font-mono'>
+                  <a href='/docs-json'>JSON format (able to directly import in
+                    Postman)</a>
+                </li>
+                <li class='text-gray-900 underline font-bold font-mono'>
+                  <a href='/docs-yaml'>YAML format</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div
+            class='w-[600px] h-[400px] rounded-md bg-gray-400/30 border-2 border-dashed border-gray-400 relative overflow-hidden'
+          >
+            <img
+              src='/img/websocket.png'
+              class='w-auto h-full absolute top-0 right-[50%] translate-x-[50%]'
+            />
+            <div
+              class='w-full h-full absolute top-0 left-0 z-10 backdrop-blur-md px-10'
+            >
+              <h3
+                class='text-center text-3xl font-bold text-gray-50 py-4'
+              >Websockets</h3>
+
+              <p class='text-gray-100'>
+                The WebSocket service in Main Panel server enables real-time
+                interactions by exposing an endpoint for the user side of the
+                main panel.
+              </p>
+              <p class='text-gray-100 mt-2'>Users can connect using
+                <span class='font-bold text-red-500'>Socket.IO clients</span>
+                with
+                <span class='font-bold text-red-500'>an authenticated token
+                  generated during their login
+                </span>
+                to the main panel service.</p>
+              <p class='text-gray-100 mt-2'>
+                This ensures secure and authenticated communication, enhancing
+                the responsiveness and reliability of the application.
+              </p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

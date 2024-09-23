@@ -1,0 +1,5 @@
+{
+    "watch": ["styles/tailwind.css", "views/**/*.hbs"],
+    "ext": "css hbs",
+    "exec": "npm run build:css"
+  }

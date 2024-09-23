@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html class='bg-gray-950'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Login | Configuration</title>
+    <link href='../css/tailwind.css' rel='stylesheet' />
+  </head>
+  <body>
+    <div class='h-screen w-screen bg-gray-950 flex items-center justify-center'>
+      <div class='flex items-center justify-center space-x-4'>
+        <div class='w-[400px] h-[350px] rounded-md border-2 border-dashed border-red-400 relative overflow-hidden'>
+          <img
+            src='/img/logo.png'
+            class='w-[200px] h-[200px] absolute top-[50%] right-[50%] translate-x-[50%] -translate-y-[50%]'
+          />
+          <div class='w-full h-full absolute top-0 left-0 bg-red-400/30 z-10 backdrop-blur-xl px-10'>
+            <h3 class='text-center text-3xl font-bold text-gray-50 py-4'>Login</h3>
+            <div class='flex-col w-full space-y-4'>
+              <input
+                id="email"
+                type="email"
+                class='block w-full bg-transparent border border-red-400 appearance-none ring-0 outline-none focus:border-white rounded-md p-2 text-white placeholder:text-red-400'
+                placeholder='Email'
+              />
+              <input
+                id="password"
+                type="password"
+                class='block w-full bg-transparent border border-red-400 appearance-none ring-0 outline-none focus:border-white rounded-md p-2 text-white placeholder:text-red-400'
+                placeholder='Password'
+              />
+              <button
+                id="loginButton"
+                class='block w-full border bg-red-600 hover:bg-red-400 active:bg-white active:text-red-600 border-red-400 appearance-none ring-0 outline-none rounded-md p-2 text-white'
+              >
+                Login
+              </button>
+            </div>
+            <p class='text-sm text-red-400 mt-6'>
+              Note: The panel configuration is an automated action of Main panel and Sub agent panels.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      document.getElementById('loginButton').addEventListener('click', function() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        axios.post('/api/login', {
+          email: email,
+          password: password
+        })
+        .then(function (response) {
+          console.log('Login successful:', response);
+          // Handle successful login here
+        })
+        .catch(function (error) {
+          console.log('Login error:', error);
+          // Handle login error here
+        });
+      });
+    </script>
+  </body>
+</html>

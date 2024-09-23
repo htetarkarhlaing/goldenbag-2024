@@ -1,0 +1,135 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id String [pk]
+  name String [not null]
+  email String [not null]
+  phone String [not null]
+  password String [not null]
+  userId String [unique, not null]
+  createdById String
+  CreatedBy User
+  Role Role [not null, default: 'ADMIN']
+  status Status [not null, default: 'ACTIVE']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  User User [not null]
+  Voucher Voucher [not null]
+  SupplyRecord SupplyRecord [not null]
+}
+
+Table Voucher {
+  id String [pk]
+  date DateTime [default: `now()`, not null]
+  voucherId String [unique, not null]
+  customerId String [not null]
+  Customer Customer [not null]
+  truckId String [not null]
+  Truck Truck [not null]
+  createdById String
+  CreatedBy User
+  status Status [not null, default: 'ACTIVE']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  VoucherDetail VoucherDetail [not null]
+}
+
+Table VoucherDetail {
+  id String [pk]
+  voucherId String [not null]
+  Voucher Voucher [not null]
+  particular String
+  particularNote String
+  ply String
+  size String
+  unitPrice Float [not null, default: 0]
+  qty Int [not null, default: 0]
+  amount Float [not null, default: 0]
+  note String [not null]
+  status Status [not null, default: 'ACTIVE']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Customer {
+  id String [pk]
+  name String [not null]
+  status Status [not null, default: 'ACTIVE']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  Voucher Voucher [not null]
+}
+
+Table Truck {
+  id String [pk]
+  name String [not null]
+  status Status [not null, default: 'ACTIVE']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  Voucher Voucher [not null]
+}
+
+Table PaperType {
+  id String [pk]
+  name String [not null]
+  status Status [not null, default: 'ACTIVE']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  SupplyRecord SupplyRecord [not null]
+}
+
+Table Supplier {
+  id String [pk]
+  name String [not null]
+  status Status [not null, default: 'ACTIVE']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  SupplyRecord SupplyRecord [not null]
+}
+
+Table SupplyRecord {
+  id String [pk]
+  supplierId String [not null]
+  Supplier Supplier [not null]
+  paperTypeId String [not null]
+  PaperType PaperType [not null]
+  invoice String
+  weight String
+  unitPrice Float [not null, default: 0]
+  amount Float [not null, default: 0]
+  note String
+  date DateTime [default: `now()`, not null]
+  createdById String
+  CreatedBy User
+  status Status [not null, default: 'ACTIVE']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+Enum Status {
+  ACTIVE
+  DELETED
+}
+
+Ref: User.createdById - User.id [delete: No Action]
+
+Ref: Voucher.customerId > Customer.id
+
+Ref: Voucher.truckId > Truck.id
+
+Ref: Voucher.createdById > User.id
+
+Ref: VoucherDetail.voucherId > Voucher.id
+
+Ref: SupplyRecord.supplierId > Supplier.id
+
+Ref: SupplyRecord.paperTypeId > PaperType.id
+
+Ref: SupplyRecord.createdById > User.id
