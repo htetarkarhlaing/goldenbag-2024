@@ -155,9 +155,6 @@ export class VoucherService {
   ) {
     const { invoice, detail } = createInvoiceDto;
 
-    console.log('invoice', invoice);
-    console.log('detail', detail);
-
     try {
       // Create Invoice record
       const createdVoucher = await this.prisma.client.voucher.create({
@@ -176,10 +173,10 @@ export class VoucherService {
           Truck: {
             connectOrCreate: {
               where: {
-                name: invoice.customer,
+                name: invoice.truck,
               },
               create: {
-                name: invoice.customer,
+                name: invoice.truck,
               },
             },
           },
