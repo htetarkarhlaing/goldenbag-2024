@@ -31,15 +31,15 @@ model User {
 }
 
 model Voucher {
-  id          String   @id @default(uuid()) @map("_id")
-  date        DateTime @default(now())
-  voucherId   String   @unique
-  customerId  String
-  Customer    Customer @relation(fields: [customerId], references: [id])
-  truckId     String
-  Truck       Truck    @relation(fields: [truckId], references: [id])
-  createdById String?
-  CreatedBy   User?    @relation(fields: [createdById], references: [id])
+  id            String   @id @default(uuid()) @map("_id")
+  date          DateTime @default(now())
+  voucherNumber String?
+  customerId    String
+  Customer      Customer @relation(fields: [customerId], references: [id])
+  truckId       String
+  Truck         Truck    @relation(fields: [truckId], references: [id])
+  createdById   String?
+  CreatedBy     User?    @relation(fields: [createdById], references: [id])
 
   status        Status          @default(ACTIVE)
   createdAt     DateTime        @default(now())
@@ -58,7 +58,7 @@ model VoucherDetail {
   unitPrice      Float   @default(0.0)
   qty            Int     @default(0)
   amount         Float   @default(0.0)
-  note           String
+  note           String?
 
   status    Status   @default(ACTIVE)
   createdAt DateTime @default(now())
@@ -67,7 +67,7 @@ model VoucherDetail {
 
 model Customer {
   id   String @id @default(uuid()) @map("_id")
-  name String
+  name String @unique
 
   status    Status    @default(ACTIVE)
   createdAt DateTime  @default(now())
@@ -77,7 +77,7 @@ model Customer {
 
 model Truck {
   id   String @id @default(uuid()) @map("_id")
-  name String
+  name String @unique
 
   status    Status    @default(ACTIVE)
   createdAt DateTime  @default(now())

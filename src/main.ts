@@ -24,9 +24,9 @@ async function bootstrap() {
   app.setViewEngine('hbs');
 
   const options = new DocumentBuilder()
-    .setTitle('Tiny Restaurant API Documentation')
+    .setTitle('Goldenbag API Documentation')
     .setDescription('API description')
-    .setVersion('1.0')
+    .setVersion('0.2.0')
     .addTag('Public')
     .addBearerAuth()
     .build();
