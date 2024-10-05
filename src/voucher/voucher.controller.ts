@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -127,6 +128,25 @@ export class VoucherController {
         user,
         createInvoiceDto,
       );
+      return { data: voucherInfo };
+    } catch (err) {
+      if (err instanceof HttpException) {
+        throw err;
+      }
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Delete('voucher-delete/:id')
+  @ApiOperation({ summary: 'Delete an invoice' })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  async deleteInvoice(@Param('id') id: string) {
+    try {
+      const voucherInfo = await this.voucherService.delete(id);
       return { data: voucherInfo };
     } catch (err) {
       if (err instanceof HttpException) {

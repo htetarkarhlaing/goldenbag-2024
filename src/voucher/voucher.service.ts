@@ -54,7 +54,7 @@ export class VoucherService {
       }
 
       if (startDate && endDate) {
-        where.date = {
+        where.createdAt = {
           gte: new Date(startDate),
           lte: new Date(endDate),
         };
@@ -104,6 +104,24 @@ export class VoucherService {
       };
     } catch (err) {
       console.log(err);
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async delete(id: string) {
+    try {
+      await this.prisma.client.voucher.update({
+        where: {
+          id,
+        },
+        data: {
+          status: 'DELETED',
+        },
+      });
+    } catch (err) {
       throw new HttpException(
         'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,
