@@ -113,6 +113,28 @@ export class VoucherController {
     }
   }
 
+  @ApiOperation({
+    summary: 'Voucher Chart Data',
+    description: 'fetch voucher data for chart',
+  })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Get('voucher-chart')
+  async voucherDataForChart() {
+    try {
+      const weekly = await this.voucherService.getVouchersForCurrentWeek();
+      return { data: weekly };
+    } catch (err) {
+      if (err instanceof HttpException) {
+        throw err;
+      }
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   @Post('voucher-create')
   @ApiOperation({ summary: 'Create a new invoice' })
   @ApiBody({ type: CreateInvoiceDto })

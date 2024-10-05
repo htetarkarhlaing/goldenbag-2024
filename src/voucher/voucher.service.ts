@@ -3,6 +3,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CustomPrismaService } from 'nestjs-prisma';
 import { CreateInvoiceDto } from './dto';
 import { User } from '@prisma/client';
+import * as moment from 'moment-timezone';
 
 @Injectable()
 export class VoucherService {
@@ -54,9 +55,9 @@ export class VoucherService {
       }
 
       if (startDate && endDate) {
-        where.createdAt = {
-          gte: new Date(startDate),
-          lte: new Date(endDate),
+        where.date = {
+          gte: moment(startDate).tz('Asia/Yangon').toISOString(),
+          lte: moment(endDate).tz('Asia/Yangon').toISOString(),
         };
       }
 
@@ -198,7 +199,7 @@ export class VoucherService {
               },
             },
           },
-          date: invoice.date,
+          date: moment(invoice.date).tz('Asia/Yangon').toISOString(),
           CreatedBy: {
             connect: {
               id: account.id,
@@ -231,5 +232,69 @@ export class VoucherService {
       console.log(error);
       throw new Error('Error creating invoice: ' + error.message);
     }
+  }
+
+  async getVouchersForCurrentWeek() {
+    const startOfWeek = moment().startOf('isoWeek').toISOString();
+    const endOfWeek = moment().endOf('isoWeek').toISOString();
+
+    const vouchers = await this.prisma.client.voucher.findMany({
+      where: {
+        AND: [
+          {
+            status: 'ACTIVE',
+          },
+          {
+            date: {
+              gte: startOfWeek,
+              lte: endOfWeek,
+            },
+          },
+        ],
+      },
+      select: {
+        id: true,
+        voucherNumber: true,
+        createdAt: true,
+        VoucherDetail: {
+          select: {
+            amount: true,
+          },
+        },
+      },
+    });
+
+    console.log(vouchers);
+
+    const weeklyData = {
+      Monday: 0,
+      Tuesday: 0,
+      Wednesday: 0,
+      Thursday: 0,
+      Friday: 0,
+      Saturday: 0,
+      Sunday: 0,
+    };
+
+    vouchers.forEach((voucher) => {
+      const dayOfWeek = moment(voucher.createdAt).format('dddd');
+
+      const totalAmountForVoucher = voucher.VoucherDetail.reduce(
+        (acc, detail) => acc + detail.amount,
+        0,
+      );
+
+      if (weeklyData[dayOfWeek] !== undefined) {
+        weeklyData[dayOfWeek] += totalAmountForVoucher;
+      }
+    });
+
+    const result = Object.keys(weeklyData).map((key) => ({
+      key,
+      value: weeklyData[key],
+    }));
+    console.log(result);
+
+    return weeklyData;
   }
 }
