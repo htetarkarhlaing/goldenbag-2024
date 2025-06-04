@@ -8,9 +8,10 @@ import { UserAgentMiddleware } from '@app/lib/middlewares/useragent.middleware';
 import { MigrationModule } from './migration/migration.module';
 import { VoucherModule } from './voucher/voucher.module';
 import { SupplyModule } from './supply/supply.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), AuthModule, PrismaModule, MigrationModule, VoucherModule, SupplyModule],
+  imports: [ConfigModule.forRoot(), AuthModule, PrismaModule, MigrationModule, VoucherModule, SupplyModule, DashboardModule],
   controllers: [AppController],
   providers: [AppService, ConfigService],
 })

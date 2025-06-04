@@ -114,6 +114,26 @@ export class VoucherController {
   }
 
   @ApiOperation({
+    summary: 'Voucher Detail',
+    description: 'fetch voucher detail by id',
+  })
+  @Get('voucher-detail-unauth/:id')
+  async voucherDetailUnauthFetcher(@Param('id') id: string) {
+    try {
+      const voucherInfo = await this.voucherService.getById(id);
+      return { data: voucherInfo };
+    } catch (err) {
+      if (err instanceof HttpException) {
+        throw err;
+      }
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @ApiOperation({
     summary: 'Voucher Chart Data',
     description: 'fetch voucher data for chart',
   })
